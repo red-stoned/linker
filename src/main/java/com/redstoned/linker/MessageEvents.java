@@ -34,7 +34,7 @@ public abstract class MessageEvents {
     }
 
     private static MutableText restructureText(Text message) {
-        MutableText text = null;
+        MutableText text = Text.empty();
         Style style = message.getStyle();
         List<Text> noStyle = message.getWithStyle(style);
         if (noStyle.size() == 1 && noStyle.get(0).equals(message)) {
@@ -45,10 +45,6 @@ public abstract class MessageEvents {
             return (MutableText) matchMarkdownSyntax((MutableText)message, ts);
         }
         for (Text t : noStyle) {
-            if (text == null) {
-                text = restructureText(t);
-                continue;
-            }
             text.append(restructureText(t));
         }
         return text.setStyle(style);
@@ -70,7 +66,7 @@ public abstract class MessageEvents {
 
         while (matcher.find()) {
             if (matcher.start() > lastMatchEnd) {
-                textArray.add(Text.literal(msgString.substring(lastMatchEnd, matcher.start())));
+                textArray.add(Text.literal(msgString.substring(lastMatchEnd, matcher.start())).setStyle(style));
             }
             lastMatchEnd = matcher.end();
 
@@ -86,7 +82,7 @@ public abstract class MessageEvents {
         }
 
         if (lastMatchEnd < msgString.length()) {
-            textArray.add(Text.literal(msgString.substring(lastMatchEnd)));
+            textArray.add(Text.literal(msgString.substring(lastMatchEnd)).setStyle(style));
         }
 
         return ListToText(textArray);
@@ -125,15 +121,15 @@ public abstract class MessageEvents {
         } 
         // Clickable link
         else if (c.equals("c")) {
-            return TextUtil.textToCopy(ptext, Text.literal(btext).setStyle(style.withUnderline(true)), "Copy: " + ptext);
+            return TextUtil.textToCopy(ptext, Text.literal(btext).setStyle(style.withUnderline(true)));
         } 
         // Run command 
         else if (c.equals("r")) {
-            return TextUtil.runCommandText(btext, ptext);
+            return TextUtil.runCommandText(ptext, Text.literal(btext).setStyle(style.withUnderline(true)));
         } 
         // Put command in textbox
         else if (c.equals("s")) {
-            return TextUtil.suggestCommandText(btext, ptext);
+            return TextUtil.suggestCommandText(ptext, Text.literal(btext).setStyle(style.withUnderline(true)));
         }
         
         return Text.literal(fmatch);
