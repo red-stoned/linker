@@ -1,0 +1,32 @@
+{
+	"schemaVersion": 1,
+  "id": "linker",
+  "version": "${version}",
+  "name": "Linker",
+  "description": "Easy way to link urls and commands in chat for other players with the mod to click on.",
+	"authors": [
+		"Kroojel",
+		"Galiano"
+	],
+	"contact": {
+		"homepage": "https://redstoned.dev",
+		"sources": "https://github.com/red-stoned/client_maps",
+		"issues": "https://github.com/red-stoned/client_maps/issues"
+	},
+	"license": "MIT",
+  "icon": "assets/linker/icon.png",
+  "environment": "Client",
+  "entrypoints": {
+    "main": [
+      "com.redstoned.linker.Linker"
+    ]
+  },
+	"mixins": [
+	],
+	"depends": {
+		"fabricloader": ">=0.16.7",
+		"minecraft": "~1.21",
+		"java": ">=21",
+		"fabric-api": "*"
+	}
+}
