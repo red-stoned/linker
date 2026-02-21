@@ -3,6 +3,8 @@ package com.redstoned.linker;
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents;
 
 import java.util.List;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -116,8 +118,14 @@ public abstract class MessageEvents {
             }
         }
 
-        if (c.equals("l")) { 
-            return TextUtil.hyperlinkText(ptext, Text.literal(btext).setStyle(style.withUnderline(true)));
+        if (c.equals("l")) {
+            URI hyperUri;
+            try {
+                hyperUri = new URI(ptext);
+            } catch (URISyntaxException e) {
+                return Text.literal(btext);
+            }
+            return TextUtil.hyperlinkText(hyperUri, Text.literal(btext).setStyle(style.withUnderline(true)));
         } 
         // Clickable link
         else if (c.equals("c")) {
